@@ -10,7 +10,7 @@ const questions = [
     },
     {
         question: "Grand Central Terminal, Park Avenue, New York is the world's",
-        answers: [
+        answer: [
             { text: "argest railway station", correct: true },
             { text: "highest railway station", correct: false },
             { text: "longest railway station", correct: false },
@@ -19,7 +19,7 @@ const questions = [
     },
     {
         question: "Entomology is the science that studies",
-        answers: [
+        answer: [
             { text: "Behavior of human beings", correct: false },
             { text: "Insects", correct: true },
             { text: "The origin and history of technical and scientific terms", correct: false },
@@ -28,7 +28,7 @@ const questions = [
     },
     {
         question: "Garampani sanctuary is located at",
-        answers: [
+        answer: [
             { text: "Junagarh, Gujarat", correct: false },
             { text: "Diphu, Assam", correct: true },
             { text: "Kohima, Nagaland", correct: false },
@@ -59,59 +59,59 @@ function showQuestion() {
         button.innerHTML = answer.text;
         button.classList.add("btn");
         answerButton.appendChild(button);
-        if(answer.correct){
-            button.dataset.correct=answer.correct;
+        if (answer.correct) {
+            button.dataset.correct = answer.correct;
         }
-        button.addEventListener("click",selectAnswer);
+        button.addEventListener("click", selectAnswer);
     });
 
 }
-function resetState(){
-    nextButton.style.display="none";
-    while(answerButton.firstChild){
+function resetState() {
+    nextButton.style.display = "none";
+    while (answerButton.firstChild) {
         answerButton.removeChild(answerButton.firstChild);
     }
 }
-function selectAnswer(e){
-    const selectedBtn=e.target;
-    const isCorrect = selectedBtn.dataset.correct==="true";
-    if(isCorrect){
+function selectAnswer(e) {
+    const selectedBtn = e.target;
+    const isCorrect = selectedBtn.dataset.correct === "true";
+    if (isCorrect) {
         selectedBtn.classList.add("correct");
         score++;
     }
-    else{
+    else {
         selectedBtn.classList.add("incorrect");
     }
     Array.from(answerButton.children).forEach(button => {
-        if(button.dataset.correct==="true"){
+        if (button.dataset.correct === "true") {
             button.classList.add("correct");
         }
-        button.disabled=true;
+        button.disabled = true;
     }
 
-     ) ;
-     nextButton.style.display = "block";
+    );
+    nextButton.style.display = "block";
+}
+function showScore() {
+    resetState();
+    questionElement.innerHTML = `you scored ${score} out of ${questions.length}!`;
+    nextButton.innerHTML = "Play Again";
+    nextButton.style.display = "block";
+}
+function handleNextButton() {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+        showQuestion();
+    } else {
+        showScore();
     }
-    function showScore(){
-        resetState();
-        questionElement.innerHTML=`you scored ${score} out of ${questions.length}!`;
-        nextButton.innerHTML="Play Again";
-        nextButton.style.display="block";
+}
+nextButton.addEventListener("click", () => {
+    if (currentQuestionIndex < questions.length) {
+        handleNextButton();
+    } else {
+        startQuiz();
     }
-    function handleNextButton(){
-        currentQuestionIndex++;
-        if(currentQuestionIndex<questions.length){
-            showQuestion();
-        }else{
-            showScore();
-        }
-    }
-    nextButton.addEventListener("click",()=>{
-        if(currentQuestionIndex < questions.length){
-            handleNextButton();
-        }else{
-            startQuiz();
-        }
-    })
-    startQuiz();
+})
+startQuiz();
 
